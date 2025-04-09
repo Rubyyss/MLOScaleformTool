@@ -9,10 +9,10 @@ coordinate systems, and provides visualization tools to help with positioning.
 """
 
 bl_info = {
-    "name": "ScaleformToolsForMlos",
+    "name": "MLOScaleformTools",
     "author": "rubyys",
     "version": (2, 2, 1),
-    "blender": (4, 0, 0),
+    "blender": (4, 4, 0),
     "location": "View3D > Sidebar > Scaleform",
     "description": "Export Blender curves to SVG for GTA V Scaleform minimap with visualization tools and multi-curve support",
     "category": "Import-Export",
