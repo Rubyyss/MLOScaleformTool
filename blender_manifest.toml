@@ -1,93 +1,66 @@
-[bl_info]
-name = "MLOScaleformTools"
-author = "rubyys"
-version = [2, 2, 1]
-blender = [4, 4, 0]
-location = "View3D > Sidebar > Scaleform"
-description = "Sollumz extension for exporting Blender curves to SVG for GTA V Scaleform minimap and multi-curve support"
-warning = ""
-wiki_url = ""
-category = "Import-Export"
-support = "COMMUNITY"
-
-[manifest]
-name = "gta_mlo_scaleform_tool"
+schema_version = "1.0.0"
+id = "mlo_scaleform_tools"
 version = "2.2.1"
+name = "MLO Scaleform Tools"
+tagline = "Sollumz extension for exporting GTA V MLO curves to Scaleform minimap SVGs"
+maintainer = "rubyys <github@rubyys>"
 type = "extension"
-python_requires = ">=3.7"
-
-[[manifest.dependencies]]
-name = "numpy"
-version = ">=1.21.0"
-
-[[manifest.dependencies]]
-name = "sollumz"
-version = ">=3.0.0"
-
-keywords = [
-    "blender",
-    "addon",
-    "sollumz",
-    "gta-v",
-    "minimap",
-    "svg",
-    "3d",
-    "scaleform",
-    "mlo"
+website = "https://github.com/Rubyyss/MLOScaleformTool"
+tags = [
+    "Import-Export", 
+    "3D View", 
+    "Visualization", 
+    "Game Development", 
+    "GTA V"
 ]
-
-[manifest.licenses]
-type = "MIT"
-href = "https://opensource.org/licenses/MIT"
-
-[manifest.development]
-status = "stable"
-
-[manifest.development.repository]
-type = "git"
-url = "https://github.com/Rubyyss/MLOScaleformTool"
-
-[manifest.compatibility]
-blender_versions = [
-    "3.3.0",
-    "3.4.0",
-    "3.5.0", 
-    "4.0.0",
-    "4.4.0"
-]
-sollumz_versions = [
-    "3.0.0",
-    "3.1.0",
-    "3.2.0"
-]
+blender_version_min = "4.0.0"
+license = ["SPDX:MIT"]
 platforms = [
     "windows-x64",
     "linux-x64",
     "macos-x64"
 ]
 
-[manifest.installation]
-method = [
-    "Blender Preferences",
-    "Manual Installation"
-]
-requirements = [
-    "Blender 3.3+",
-    "Sollumz 3.0.0+",
-    "Python 3.7+",
-    "NumPy 1.21+"
+# Optional dependencies or external libraries
+wheels = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.0"
 ]
 
-features = [
-    "Extension for Sollumz Blender addon",
-    "Export Blender curves to SVG",
-    "Coordinate conversion between Blender, World, and Scaleform systems",
-    "Multi-curve support",
-    "Customizable SVG export settings",
-    "Caching system for improved performance"
+[dependencies]
+sollumz = ">=3.0.0"
+numpy = ">=1.21.0"
+
+[permissions]
+files = "Export Blender curves as SVG files for GTA V Scaleform minimaps"
+
+[compatibility]
+blender = [
+    "4.4.0+"
+]
+sollumz = [
+    "2.6.1+",
 ]
 
-[manifest.sollumz_integration]
-type = "extension"
-purpose = "Minimap creation for GTA V MLOs"
-compatibility_notes = "Requires Sollumz addon to be installed and enabled"
+[features]
+export_svg = true
+coordinate_conversion = true
+multi_curve_support = true
+performance_caching = true
+
+[development]
+status = "stable"
+repository = "https://github.com/Rubyyss/MLOScaleformTool"
+issues = "https://github.com/Rubyyss/MLOScaleformTool/issues"
+
+[metadata]
+description = """
+MLO Scaleform Tools is a Blender addon extension for Sollumz that provides advanced tools for 
+exporting Blender curves to SVG format specifically for GTA V Scaleform minimaps. 
+
+Key features:
+- Convert Blender curves to SVG for MLO minimaps
+- Precise coordinate system transformations
+- Customizable export settings
+- Performance-optimized caching system
+"""
