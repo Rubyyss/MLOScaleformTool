@@ -1,17 +1,17 @@
 schema_version = "1.0.0"
 
 id = "gta_mlo_scaleform_tools"
-version = "1.0.0"
+version = "2.2.1"
 name = "MLOScaleformTools"
 tagline = "Grand Theft Auto V Scaleform Tools"
-maintainer = "rubyys"
+maintainer = "rubyys <tecladogb@gmail.com>"
 type = "add-on"
 
 website = "https://github.com/Rubyyss/MLOScaleformTool"
 
-tags = ["Scaleform", "Import-Export", "3D View", "Curves", "Calculator", "2D Size", "minimap"]
+tags = ["Import-Export"]
 
-blender_version_min = "4.4.0"
+blender_version_min = "4.2.0"
 
 license = ["SPDX:MIT",]
 copyright = ["2025-2026 rubyys"]
@@ -19,4 +19,3 @@ copyright = ["2025-2026 rubyys"]
 [permissions]
 files = "Import/export SVG Files. Save/load presets."
 clipboard = "Copy/paste location and rotation of objects."
-
