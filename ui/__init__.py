@@ -50,38 +50,9 @@ classes = [
     SCALEFORM_PT_minimap_settings
 ]
 
-def register():
-    """Register the add-on with Blender."""
-    # Register UI classes
-    for cls in classes:
-        bpy.utils.register_class(cls)
-    
-    # Register scene properties
-    bpy.types.Scene.scaleform_settings = bpy.props.PointerProperty(type=ScaleformCalculatorSettings)
-    register_scene_properties()
-    
-    # Print success message
-    from .. import bl_info
-    print(f"Registered {bl_info['name']} v{'.'.join(str(v) for v in bl_info['version'])}")
-
-def unregister():
-    """Unregister the add-on from Blender."""
-    # Clear caches
-    from .. import utils
-    utils.clear_all_caches()
-    
-    # Unregister scene properties
-    if hasattr(bpy.types.Scene, "scaleform_settings"):
-        del bpy.types.Scene.scaleform_settings
-    unregister_scene_properties()
-    
-    # Unregister UI classes in reverse order
-    for cls in reversed(classes):
-        bpy.utils.unregister_class(cls)
-    
-    # Print success message
-    from .. import bl_info
-    print(f"Unregistered {bl_info['name']}")
+# Note: We don't include any register() or unregister() functions here 
+# since registration will be handled by the main __init__.py file
+# This prevents double registration issues
 
 __all__ = [
     # Properties
