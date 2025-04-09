@@ -229,7 +229,7 @@ class SCALEFORM_PT_export_settings(Panel):
         
         # Marker settings box
         marker_box = layout.box()
-        marker_box.label(text="Marker Settings:", icon='KEYTYPE_KEYFRAME_VEC')
+        marker_box.label(text="Marker Settings: (DEBUG ONLY)", icon='KEYTYPE_KEYFRAME_VEC')
         row = marker_box.row()
         row.prop(settings, "show_markers")
         sub = marker_box.column()
