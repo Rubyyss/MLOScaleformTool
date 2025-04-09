@@ -4,7 +4,7 @@ author = "rubyys"
 version = [2, 2, 1]
 blender = [4, 4, 0]
 location = "View3D > Sidebar > Scaleform"
-description = "Sollumz extension for exporting Blender curves to SVG for GTA V Scaleform minimap with visualization tools and multi-curve support"
+description = "Sollumz extension for exporting Blender curves to SVG for GTA V Scaleform minimap and multi-curve support"
 warning = ""
 wiki_url = ""
 category = "Import-Export"
@@ -32,8 +32,8 @@ keywords = [
     "minimap",
     "svg",
     "3d",
-    "mapping",
-    "game-development"
+    "scaleform",
+    "mlo"
 ]
 
 [manifest.licenses]
@@ -89,5 +89,5 @@ features = [
 
 [manifest.sollumz_integration]
 type = "extension"
-purpose = "Minimap creation and visualization for GTA V MLOs"
+purpose = "Minimap creation for GTA V MLOs"
 compatibility_notes = "Requires Sollumz addon to be installed and enabled"
