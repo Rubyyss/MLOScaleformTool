@@ -11,7 +11,7 @@ coordinate systems, and provides visualization tools to help with positioning.
 bl_info = {
     "name": "MLOScaleformTools",
     "author": "rubyys",
-    "version": (2, 2, 1),
+    "version": (1, 0, 0),
     "blender": (4, 4, 0),
     "location": "View3D > Sidebar > Scaleform",
     "description": "Export Blender curves to SVG for GTA V Scaleform minimap with visualization tools and multi-curve support",
