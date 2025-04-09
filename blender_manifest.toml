@@ -53,7 +53,6 @@ blender = ["Import-Export", "3D View"]
 # Developer information
 [developer]
 name = "rubyys"
-email = "contact@example.com"  # Replace with actual contact email if available
 
 # Version notes
 [version_notes]
