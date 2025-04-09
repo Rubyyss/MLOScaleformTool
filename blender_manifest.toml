@@ -1,66 +1,22 @@
 schema_version = "1.0.0"
-id = "mlo_scaleform_tools"
-version = "2.2.1"
-name = "MLO Scaleform Tools"
-tagline = "Sollumz extension for exporting GTA V MLO curves to Scaleform minimap SVGs"
-maintainer = "rubyys <github@rubyys>"
-type = "extension"
+
+id = "gta_mlo_scaleform_tools"
+version = "1.0.0"
+name = "MLOScaleformTools"
+tagline = "Grand Theft Auto V Scaleform Tools"
+maintainer = "rubyys"
+type = "add-on"
+
 website = "https://github.com/Rubyyss/MLOScaleformTool"
-tags = [
-    "Import-Export", 
-    "3D View", 
-    "Visualization", 
-    "Game Development", 
-    "GTA V"
-]
-blender_version_min = "4.0.0"
-license = ["SPDX:MIT"]
-platforms = [
-    "windows-x64",
-    "linux-x64",
-    "macos-x64"
-]
 
-# Optional dependencies or external libraries
-wheels = [
-    "numpy>=1.21.0",
-    "scipy>=1.7.0"
-]
+tags = ["Scaleform", "Import-Export", "3D View", "Curves", "Calculator", "2D Size", "minimap"]
 
-[dependencies]
-sollumz = ">=3.0.0"
-numpy = ">=1.21.0"
+blender_version_min = "4.4.0"
+
+license = ["SPDX:MIT",]
+copyright = ["2025-2026 rubyys"]
 
 [permissions]
-files = "Export Blender curves as SVG files for GTA V Scaleform minimaps"
+files = "Import/export SVG Files. Save/load presets."
+clipboard = "Copy/paste location and rotation of objects."
 
-[compatibility]
-blender = [
-    "4.4.0+"
-]
-sollumz = [
-    "2.6.1+",
-]
-
-[features]
-export_svg = true
-coordinate_conversion = true
-multi_curve_support = true
-performance_caching = true
-
-[development]
-status = "stable"
-repository = "https://github.com/Rubyyss/MLOScaleformTool"
-issues = "https://github.com/Rubyyss/MLOScaleformTool/issues"
-
-[metadata]
-description = """
-MLO Scaleform Tools is a Blender addon extension for Sollumz that provides advanced tools for 
-exporting Blender curves to SVG format specifically for GTA V Scaleform minimaps. 
-
-Key features:
-- Convert Blender curves to SVG for MLO minimaps
-- Precise coordinate system transformations
-- Customizable export settings
-- Performance-optimized caching system
-"""
