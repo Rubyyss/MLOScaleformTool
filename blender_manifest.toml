@@ -1,22 +1,14 @@
-# Blender Manifest for MLOScaleformTools
-
-# Manifest schema specification
 schema_version = "1.0.0"
 
-# Unique plugin identifier
 id = "gta_mlo_scaleform_tools"
-
-# Version information
-version = "2.2.1"
+version = "1.0.0"
 name = "MLOScaleformTools"
-tagline = "Scaleform Tools for GTA V MLO Minimaps"
+tagline = "Scaleform Tools for minimaps"
 maintainer = "rubyys"
 type = "add-on"
 
-# Project information
 website = "https://github.com/Rubyyss/MLOScaleformTool"
 
-# Tags for search and categorization
 tags = [
     "Scaleform", 
     "Import-Export", 
@@ -29,35 +21,11 @@ tags = [
     "MLO"
 ]
 
-# Blender version requirements
 blender_version_min = "4.4.0"
 
-# License information
 license = ["SPDX:MIT"]
 copyright = ["2025-2026 rubyys"]
 
-# Required permissions
 [permissions]
 files = "Import/export SVG files. Save/load presets."
 clipboard = "Copy/paste object location and rotation."
-
-# Dependencies (optional, if necessary)
-[dependencies]
-python = "3.10"
-numpy = ">=1.21.0"
-
-# Blender categories (optional)
-[categories]
-blender = ["Import-Export", "3D View"]
-
-# Developer information
-[developer]
-name = "rubyys"
-
-# Version notes
-[version_notes]
-2.2.1 = """
-- Minor bug fixes
-- Improved compatibility with Blender 4.4.0+
-- Performance optimization in coordinate conversion
-"""
