@@ -8,6 +8,7 @@ It handles coordinate conversion between Blender, world, and Scaleform
 coordinate systems, and provides visualization tools to help with positioning.
 """
 
+# Define bl_info at the top of the file
 bl_info = {
     "name": "MLOScaleformTools",
     "author": "rubyys",
@@ -16,6 +17,8 @@ bl_info = {
     "location": "View3D > Sidebar > Scaleform",
     "description": "Export Blender curves to SVG for GTA V Scaleform minimap with visualization tools and multi-curve support",
     "category": "Import-Export",
+    "support": "COMMUNITY",
+    "wiki_url": "https://github.com/Rubyyss/MLOScaleformTool",
 }
 
 import bpy

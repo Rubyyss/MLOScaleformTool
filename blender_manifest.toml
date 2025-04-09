@@ -1,21 +1,64 @@
+# Blender Manifest for MLOScaleformTools
+
+# Manifest schema specification
 schema_version = "1.0.0"
 
+# Unique plugin identifier
 id = "gta_mlo_scaleform_tools"
+
+# Version information
 version = "2.2.1"
 name = "MLOScaleformTools"
-tagline = "Grand Theft Auto V Scaleform Tools"
-maintainer = "rubyys <tecladogb@gmail.com>"
+tagline = "Scaleform Tools for GTA V MLO Minimaps"
+maintainer = "rubyys"
 type = "add-on"
 
+# Project information
 website = "https://github.com/Rubyyss/MLOScaleformTool"
 
-tags = ["Import-Export"]
+# Tags for search and categorization
+tags = [
+    "Scaleform", 
+    "Import-Export", 
+    "3D View", 
+    "Curves", 
+    "Calculator", 
+    "2D Size", 
+    "Minimap", 
+    "GTA V", 
+    "MLO"
+]
 
-blender_version_min = "4.2.0"
+# Blender version requirements
+blender_version_min = "4.4.0"
 
-license = ["SPDX:MIT",]
+# License information
+license = ["SPDX:MIT"]
 copyright = ["2025-2026 rubyys"]
 
+# Required permissions
 [permissions]
-files = "Import/export SVG Files. Save/load presets."
-clipboard = "Copy/paste location and rotation of objects."
+files = "Import/export SVG files. Save/load presets."
+clipboard = "Copy/paste object location and rotation."
+
+# Dependencies (optional, if necessary)
+[dependencies]
+python = "3.10"
+numpy = ">=1.21.0"
+
+# Blender categories (optional)
+[categories]
+blender = ["Import-Export", "3D View"]
+
+# Developer information
+[developer]
+name = "rubyys"
+email = "contact@example.com"  # Replace with actual contact email if available
+
+# Version notes
+[version_notes]
+2.2.1 = """
+- Minor bug fixes
+- Improved compatibility with Blender 4.4.0+
+- Performance optimization in coordinate conversion
+"""
