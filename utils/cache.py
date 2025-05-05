@@ -202,11 +202,26 @@ def clear_all_caches() -> None:
 
     This is useful when forcing recalculations or freeing memory.
     """
-    calculation_cache.clear()
-    geometry_cache.clear()
-    curve_cache.clear()
-    gc.collect()  # Force garbage collection
-
+    try:
+        calculation_cache.clear()
+    except Exception as e:
+        print(f"Error clearing calculation cache: {e}")
+        
+    try:
+        geometry_cache.clear()
+    except Exception as e:
+        print(f"Error clearing geometry cache: {e}")
+        
+    try:
+        curve_cache.clear()
+    except Exception as e:
+        print(f"Error clearing curve cache: {e}")
+        
+    # Force garbage collection
+    try:
+        gc.collect()
+    except Exception as e:
+        print(f"Error during garbage collection: {e}")
 
 def get_cache_stats() -> Dict[str, Dict[str, Any]]:
     """

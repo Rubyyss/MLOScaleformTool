@@ -33,6 +33,27 @@ _visualization_enabled = False
 _visualization_data = {}
 
 
+def clear_visualization_data():
+    """
+    Clear all visualization data.
+    
+    This function resets the global visualization state variables, ensuring
+    that no data persists between scene changes or file loads.
+    """
+    global _visualization_data, _visualization_enabled, _handle_3d
+    
+    # Reset the data dictionary
+    _visualization_data = {}
+    
+    # Set enabled flag to False
+    _visualization_enabled = False
+    
+    # Clear the handle (if not already cleared by disable_visualization)
+    # We don't remove the draw handler here as that should be done by disable_visualization
+    # This is just a safety measure
+    _handle_3d = None
+
+
 def draw_3d_callback():
     """
     Callback function for 3D drawing.
@@ -447,18 +468,36 @@ def enable_visualization(context):
 def disable_visualization(context):
     """Disable visualization in the 3D viewport."""
     global _handle_3d, _visualization_enabled
-
+    
+    # Check if the handle exists
     if _handle_3d is not None:
-        bpy.types.SpaceView3D.draw_handler_remove(_handle_3d, "WINDOW")
-        _handle_3d = None
-
+        try:
+            # Try to remove the draw handler
+            bpy.types.SpaceView3D.draw_handler_remove(_handle_3d, "WINDOW")
+        except Exception as e:
+            # If there's an error (e.g., if the handler is already removed),
+            # just log and continue
+            print(f"Warning: Failed to remove 3D visualization handler: {e}")
+        finally:
+            # Always set handle to None to ensure we don't try to remove it again
+            _handle_3d = None
+    
+    # Set enabled flag to False
     _visualization_enabled = False
-
-    # Force viewport update
-    for area in context.screen.areas:
-        if area.type == "VIEW_3D":
-            area.tag_redraw()
-
+    
+    # Make sure the scene property reflects this state
+    if context and hasattr(context, "scene") and context.scene and hasattr(context.scene, "scaleform_vis_enabled"):
+        context.scene.scaleform_vis_enabled = False
+    
+    # Force viewport update if possible
+    try:
+        if context and hasattr(context, "screen") and context.screen:
+            for area in context.screen.areas:
+                if area.type == "VIEW_3D":
+                    area.tag_redraw()
+    except Exception as e:
+        print(f"Warning: Failed to update viewport: {e}")
+    
     return True
 
 
@@ -466,23 +505,32 @@ def update_visualization_data(context):
     """Update visualization data based on selected curves."""
     global _visualization_data
 
-    # Clear the cache to force recalculation
-    curve_cache.clear()
-
-    # Clear previous visualization data
+    # First, clear the visualization data
     _visualization_data = {}
 
+    # Clear the cache to force recalculation
+    from ..utils.cache import curve_cache
+    curve_cache.clear()
+
     # Force viewport update to clear old visualization
-    for area in context.screen.areas:
-        if area.type == "VIEW_3D":
-            area.tag_redraw()
+    try:
+        for area in context.screen.areas:
+            if area.type == "VIEW_3D":
+                area.tag_redraw()
+    except:
+        pass  # Ignore errors if context or screen is invalid
 
     # Process the selected curves - use force refresh to skip cache
     try:
         curve_data = CurveProcessor.force_refresh_curve_data(context)
-    except AttributeError:
-        # Fallback if the force_refresh_curve_data method is not available
-        curve_data = CurveProcessor.get_selected_curves(context, use_cache=False)
+    except Exception as e:
+        print(f"Error refreshing curve data: {e}")
+        # Fallback if the force_refresh_curve_data method is not available or fails
+        try:
+            curve_data = CurveProcessor.get_selected_curves(context, use_cache=False)
+        except Exception as e2:
+            print(f"Error getting selected curves: {e2}")
+            return False
 
     if not curve_data["valid"]:
         return False
@@ -541,9 +589,12 @@ def update_visualization_data(context):
             _visualization_data["direction"] = (direction.x, direction.y, direction.z)
 
     # Force viewport update
-    for area in context.screen.areas:
-        if area.type == "VIEW_3D":
-            area.tag_redraw()
+    try:
+        for area in context.screen.areas:
+            if area.type == "VIEW_3D":
+                area.tag_redraw()
+    except:
+        pass  # Ignore errors if context or screen is invalid
 
     return True
 
@@ -566,6 +617,8 @@ class SCALEFORM_OT_toggle_visualization(Operator):
         if _visualization_enabled:
             # Disable visualization
             if disable_visualization(context):
+                # Clear all visualization data
+                clear_visualization_data()
                 context.scene.scaleform_vis_enabled = False
                 self.report({"INFO"}, "Visualization disabled")
             else:

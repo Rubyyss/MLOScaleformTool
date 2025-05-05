@@ -27,6 +27,7 @@ import bpy
 import os
 import sys
 from importlib import reload
+from bpy.app.handlers import persistent
 
 # Add module path if running as script
 if __name__ == "__main__":
@@ -43,6 +44,80 @@ from . import geometry
 from . import utils
 from . import core
 from . import ui
+
+
+# Scene handler functions moved directly to this file to avoid circular imports
+@persistent
+def on_file_load(dummy):
+    """
+    Handler called when a new file is loaded.
+    This ensures visualizations are cleared when opening a new project.
+    """
+    # Clear all caches to ensure we don't have stale data
+    from .utils.cache import clear_all_caches
+    clear_all_caches()
+    
+    # Disable any active visualization
+    if bpy.context:
+        # Import here to avoid circular imports
+        from .ui.visualization import disable_visualization, clear_visualization_data
+        disable_visualization(bpy.context)
+        clear_visualization_data()
+    
+    # Reset the visualization enabled property if it exists
+    for scene in bpy.data.scenes:
+        if hasattr(scene, "scaleform_vis_enabled"):
+            scene.scaleform_vis_enabled = False
+
+
+@persistent
+def on_scene_change(dummy):
+    """
+    Handler called when switching between scenes.
+    This ensures visualizations match the current scene.
+    """
+    # Disable any active visualization in old scene
+    if bpy.context:
+        # Import here to avoid circular imports
+        from .ui.visualization import disable_visualization, clear_visualization_data
+        disable_visualization(bpy.context)
+        clear_visualization_data()
+    
+    # Make sure the UI reflects the correct state
+    if hasattr(bpy.context, "scene") and bpy.context.scene and hasattr(bpy.context.scene, "scaleform_vis_enabled"):
+        bpy.context.scene.scaleform_vis_enabled = False
+
+
+def register_scene_handlers():
+    """Register the scene and file handlers."""
+    # Check if handlers are already registered to avoid duplicates
+    if on_file_load not in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.append(on_file_load)
+        
+    # For Blender 4.x, use the appropriate handler
+    # Blender 4.0+ uses depsgraph_update_post instead of scene_update_post
+    if hasattr(bpy.app.handlers, "depsgraph_update_post"):
+        if on_scene_change not in bpy.app.handlers.depsgraph_update_post:
+            bpy.app.handlers.depsgraph_update_post.append(on_scene_change)
+    elif hasattr(bpy.app.handlers, "scene_update_post"):
+        if on_scene_change not in bpy.app.handlers.scene_update_post:
+            bpy.app.handlers.scene_update_post.append(on_scene_change)
+
+
+def unregister_scene_handlers():
+    """Unregister the scene and file handlers."""
+    # Remove all handler references
+    if on_file_load in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(on_file_load)
+        
+    # Try both handler types for compatibility
+    if hasattr(bpy.app.handlers, "depsgraph_update_post"):
+        if on_scene_change in bpy.app.handlers.depsgraph_update_post:
+            bpy.app.handlers.depsgraph_update_post.remove(on_scene_change)
+    
+    if hasattr(bpy.app.handlers, "scene_update_post"):
+        if on_scene_change in bpy.app.handlers.scene_update_post:
+            bpy.app.handlers.scene_update_post.remove(on_scene_change)
 
 
 def reload_modules():
@@ -105,6 +180,9 @@ def register():
             except Exception as e:
                 print(f"Error registering {cls.__name__}: {e}")
 
+    # Step 5: Register scene handlers for visualization cleanup
+    register_scene_handlers()
+
     print(
         f"Registered {_bl_info['name']} v{'.'.join(str(v) for v in _bl_info['version'])}"
     )
@@ -112,6 +190,9 @@ def register():
 
 def unregister():
     """Unregister the add-on from Blender."""
+    # First unregister scene handlers to prevent errors during cleanup
+    unregister_scene_handlers()
+
     # Clear all caches
     utils.clear_all_caches()
 
