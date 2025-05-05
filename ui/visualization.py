@@ -48,15 +48,6 @@ def draw_3d_callback():
     gpu.state.line_width_set(LINE_WIDTH)
 
     # Draw 3D elements
-    if "bounds" in _visualization_data:
-        draw_bounds(_visualization_data["bounds"])
-
-    if "center" in _visualization_data:
-        draw_center(_visualization_data["center"])
-
-    if "direction" in _visualization_data and "center" in _visualization_data:
-        draw_direction(_visualization_data["center"], _visualization_data["direction"])
-
     if _visualization_data.get("show_axes", True) and "center" in _visualization_data:
         draw_axes(
             _visualization_data["center"],
