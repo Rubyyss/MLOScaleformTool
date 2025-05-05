@@ -342,6 +342,10 @@ class SCALEFORM_OT_apply_fill_settings(Operator):
     def execute(self, context):
         # Get settings
         settings = context.scene.scaleform_settings
+        
+        # Clear cache to force fresh settings
+        from ..utils.cache import curve_cache
+        curve_cache.clear()
 
         # Get selected curves
         selected_curves = [
@@ -369,6 +373,9 @@ class SCALEFORM_OT_apply_fill_settings(Operator):
             obj["scaleform_stroke_color_b"] = settings.stroke_color[2]
             obj["scaleform_stroke_color_a"] = settings.stroke_color[3]
             obj["scaleform_stroke_width"] = settings.stroke_width
+            
+        # Force refresh of curve data after applying settings
+        CurveProcessor.force_refresh_curve_data(context)
 
         # Report success to the user
         self.report(

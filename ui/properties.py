@@ -30,6 +30,11 @@ def update_fill_preset(self, context):
         self: Property owner
         context: Blender context
     """
+    
+    # Clear the cache to force an upgrade
+    from ..utils.cache import curve_cache
+    curve_cache.clear()
+    
     preset = self.fill_preset
     if preset in FILL_PRESETS:
         self.fill_color = FILL_PRESETS[preset]
