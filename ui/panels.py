@@ -271,17 +271,6 @@ class SCALEFORM_PT_export_settings(Panel):
                     text=f"Stroke: #{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
                 )
 
-        # Marker settings box
-        marker_box = layout.box()
-        marker_box.label(text="Marker Settings:DEBUG:", icon="KEYTYPE_KEYFRAME_VEC")
-        row = marker_box.row()
-        row.prop(settings, "show_markers")
-        sub = marker_box.column()
-        sub.enabled = settings.show_markers
-        sub_row = sub.row()
-        sub_row.prop(settings, "marker_color", text="Color")
-        sub_row.prop(settings, "marker_size", text="Size")
-
 
 class SCALEFORM_PT_minimap_settings(Panel):
     """

@@ -298,7 +298,7 @@ class SCALEFORM_OT_reset_settings(Operator):
         settings = context.scene.scaleform_settings
 
         # Reset to defaults
-        settings.svg_scale = 10.0
+        settings.svg_scale = 20.0
         settings.precision = 2
         settings.resolution = 12
         settings.center_at_origin = False
@@ -308,9 +308,6 @@ class SCALEFORM_OT_reset_settings(Operator):
         settings.use_stroke = False
         settings.stroke_color = (0.25, 0.25, 0.25, 1.0)
         settings.stroke_width = 0.5
-        settings.show_markers = True
-        settings.marker_color = "#FF0000"
-        settings.marker_size = 5.0
         settings.use_comma_separator = False
         settings.minimap_preset = "DEFAULT"
         settings.minimap_width = 300.0

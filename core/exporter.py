@@ -93,13 +93,6 @@ class SVGExporter:
                     if path_data:
                         svg_content += f'    <path d="{path_data}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width}" />\n'
 
-        # Add markers if enabled
-        if settings.show_markers:
-            for coord in minimap_coords:
-                x, y = coord["x"] * settings.svg_scale, coord["y"] * settings.svg_scale
-                svg_content += f'    <circle cx="{x:.2f}" cy="{y:.2f}" r="{settings.marker_size}" fill="{settings.marker_color}" />\n'
-            svg_content += f"    <!-- Markers show reference points for positioning. Can be safely removed. -->\n"
-
         # Close SVG document
         return svg_content + "  </g>\n</svg>"
 
