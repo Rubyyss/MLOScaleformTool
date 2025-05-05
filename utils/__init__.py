@@ -1,5 +1,5 @@
 """
-Utilities package for GTA V Scaleform Minimap Calculator addon.
+Utilities package for GTA V Scaleform Minimap Calculator.
 
 This package provides utility functions and helper classes
 used throughout the addon.
@@ -7,7 +7,7 @@ used throughout the addon.
 
 from .cache import (
     Cache, calculation_cache, geometry_cache, curve_cache,
-    clear_all_caches, get_cache_stats, compute_with_cache, hash_object_data
+    clear_all_caches, get_cache_stats
 )
 
 from .helpers import (
@@ -19,7 +19,7 @@ from .helpers import (
 __all__ = [
     # Cache system
     'Cache', 'calculation_cache', 'geometry_cache', 'curve_cache',
-    'clear_all_caches', 'get_cache_stats', 'compute_with_cache', 'hash_object_data',
+    'clear_all_caches', 'get_cache_stats',
     
     # Helper functions
     'deg_to_rad', 'hex_from_rgba', 'format_coordinate',

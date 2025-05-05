@@ -1,5 +1,5 @@
 """
-Core package for GTA V Scaleform Minimap Calculator addon.
+Core package for GTA V Scaleform Minimap Calculator.
 
 This package provides the main functionality for processing curves
 and converting between coordinate systems.

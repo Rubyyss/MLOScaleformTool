@@ -1,187 +1,104 @@
-# 🗺️ GTA V Scaleform Minimap Calculator – Blender Add-on
+# GTA V Scaleform Minimap Calculator
 
-**Version:** 2.2.1  
-**Blender Compatibility:** 4.4.0+  
-**Author:** rubyys  
+A Blender addon for creating GTA V minimap layouts from Blender curves.
 
-The **GTA V Scaleform Minimap Calculator** is a powerful Blender add-on designed to export Blender curves as SVGs for GTA V Scaleform minimaps. It handles coordinate conversion between Blender, GTA V world, and Scaleform coordinate systems, offering an accurate and efficient workflow for minimap creation.
+## Overview
 
----
+This addon allows you to convert Blender curve objects into SVG files suitable for use in GTA V Scaleform minimap creation. It provides tools for:
 
-## ✨ Key Features
+- Calculating dimensions and coordinates
+- Converting between Blender, SVG, and Scaleform coordinate systems
+- Visualizing curves with proper orientation
+- Exporting properly formatted SVG files
+- Applying fill and stroke settings to curves
 
-- ✅ Export Blender curve objects to SVG format
-- 🔄 Convert coordinates between Blender, world, and Scaleform systems
-- 🎨 Support for individual fill/stroke settings per curve
-- ⚙️ Customizable SVG export settings
-- 🚀 Caching system for improved performance
-- 📏 Accurate position and dimension calculations
+## Installation
 
----
+1. Download the latest release ZIP file from the releases section
+2. In Blender, go to Edit > Preferences > Add-ons
+3. Click "Install..." and select the downloaded ZIP file
+4. Enable the "GTA V Scaleform Minimap Calculator" addon
 
-## 🧩 Installation
+## Project Structure
 
-1. Download the add-on ZIP file.
-2. Open **Blender** and go to `Edit > Preferences > Add-ons`.
-3. Click **Install...** and select the ZIP file.
-4. Enable the add-on: look for **Import-Export: MLOScaleformTools** and check the box.
+The addon is organized into logical modules:
 
----
+```
+mlo_scaleform_tool/
+├── __init__.py                  # Main initialization
+├── constants.py                 # Global constants
+├── geometry/                    # Geometric primitives and transformations
+│   ├── __init__.py
+│   ├── base.py                  # Base geometry classes (Point, Rect, Vector)
+│   ├── matrix.py                # Matrix transformation utilities
+│   └── utils.py                 # Geometry utility functions
+├── utils/                       # Utility functions
+│   ├── __init__.py
+│   ├── cache.py                 # Caching system for performance
+│   └── helpers.py               # Helper functions
+├── core/                        # Core calculation functionality
+│   ├── __init__.py
+│   ├── calculator.py            # Coordinate calculation system
+│   ├── processor.py             # Curve data processing
+│   └── exporter.py              # SVG export functionality
+└── ui/                          # Blender interface components
+    ├── __init__.py
+    ├── properties.py            # UI-related properties
+    ├── operators.py             # Operator definitions
+    ├── panels.py                # UI panels
+    └── visualization.py         # 3D viewport visualization
+```
 
-## 🧭 User Interface
+## Usage
 
-A new **"Scaleform"** tab will appear in the 3D Viewport sidebar, containing several panels:
+### Basic Workflow
 
-### 📐 Main Panel
+1. Create or import curves that represent your minimap layout in Blender
+2. Select the curves you want to include in the minimap
+3. Open the "GTA V Scaleform Minimap" panel in the 3D View sidebar (N panel)
+4. Click "Calculate Dimensions" to analyze the selected curves
+5. Review the calculated dimensions and Scaleform center coordinates
+6. (Optional) Apply fill and stroke settings to your curves
+7. Click "Export SVG" to save the SVG file for use in GTA V
 
-Core functions for minimap calculation:
+### Advanced Features
 
-- **Calculate Dimensions:** Analyze selected curves to get bounds and center points
-- **Calculate Position:** Compute the Scaleform position
-- **Export SVG:** Save the curves as an SVG file
+#### Visualization
 
-After calculating, it will display:
+The addon includes visualization tools to help understand how your curves will be exported:
 
-- **Dimensions:** Original units and scaled SVG size
-- **Scaleform Center:** Center point in Scaleform coordinates
-- **Scaleform Position:** Final calculated placement
+- Toggle visualization to see the bounds, center point, and axes
+- Display a reference grid for better positioning
+- View direction indicators showing the export orientation
 
----
+#### Coordinate Systems
 
-### ⚙️ Export Settings Panel
+The addon handles the conversion between three coordinate systems:
 
-Customize how your SVG is generated:
+1. **Blender**: The 3D coordinate system used in Blender
+2. **SVG**: The 2D coordinate system used in SVG files (origin at top-left)
+3. **Scaleform**: The coordinate system used in GTA V Scaleform (origin at center)
 
-- **SVG Scale:** Scale factor for SVG output
-- **Coordinate Precision:** Decimal places for exported coordinates
-- **Curve Resolution:** Approximation detail level for curves
-- **Center at Origin:** Option to center the SVG output
-- **Use Comma as Decimal:** Locale-friendly formatting
+#### Fill and Stroke Settings
 
-#### Fill & Stroke Options
+Apply different fill and stroke settings to your curves:
 
-- **Color Preset:** Predefined styles for different types of areas
-- **Fill Settings:** Enable/disable fills, color picker
-- **Stroke Settings:** Enable/disable outlines, color & width
-- **Marker Settings:** Optional markers to indicate positions
+- Choose from predefined color presets for different area types
+- Apply custom colors, opacity, and stroke widths
+- Customize each curve individually or apply settings to multiple curves at once
 
----
+## Performance Optimization
 
-### 🌍 Minimap Settings Panel
+The addon includes a caching system to improve performance when working with complex curves:
 
-Configure the reference bounds and dimensions for Scaleform:
+- Calculation results are cached to avoid redundant processing
+- Geometry processing is optimized for large curve sets
+- Visualizations are efficiently rendered using GPU acceleration
 
-- **World Boundaries:** Choose between default GTA V world bounds or custom values
-- **Minimap Dimensions:** Define minimap width and height in Scaleform units
+## License
 
----
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🔄 Workflow
+## Credits
 
-1. **Select Curves:** Pick one or more curve objects in your scene
-2. **Calculate Dimensions:** Analyze their size and center
-3. **Adjust Settings:** Tweak SVG/export parameters as needed
-4. **Apply Fill Settings:** Optional fill/stroke customization
-5. **Calculate Position:** Get precise Scaleform coordinates
-6. **Export SVG:** Save your curves in a minimap-ready format
-
----
-
-## 💡 Tips for Best Results
-
-- Use the **MLO floor** as a reference for positioning
-- Multiple curves can be selected and exported together
-- Curves can have **individual fill/stroke styles**
-- Some MLOs require **180° rotation** for correct alignment
-- Use **dissolve** to smooth out jagged curve points
-- For large MLOs, **adjust the SVG scale** appropriately
-- The **center point** and direction are key for proper placement
-
----
-
-## 🧠 Technical Details
-
-### Coordinate Systems
-
-The add-on converts between:
-
-- **Blender Coordinates:** Standard 3D view space
-- **World Coordinates:** GTA V world positioning
-- **Scaleform Coordinates:** 2D minimap space
-
-> In Blender:  
-> - Y → Scaleform X  
-> - -Z → Scaleform Y  
-> with appropriate scale and origin adjustment.
-
----
-
-### 🖼️ SVG Export
-
-The exported file includes:
-
-- SVG path data from curves
-- Optional fill/stroke properties
-- Optional reference markers
-
-**Export Process:**
-
-1. Extract curve data from Blender
-2. Normalize scale and origin
-3. Convert to SVG path format
-4. Apply visual styles
-5. Insert optional markers
-
----
-
-## 🛠️ Architecture
-
-Organized into several functional packages:
-
-### `core/`
-- `calculator.py` – Coordinate system conversions
-- `processor.py` – Curve processing and analysis
-- `exporter.py` – SVG generation
-
-### `geometry/`
-- `base.py` – Vector, point, rectangle classes
-- `matrix.py` – Transformations
-- `utils.py` – Geometry utilities
-
-### `ui/`
-- `properties.py` – Property declarations
-- `panels.py` – UI layout
-- `operators.py` – Button logic and actions
-
-### `utils/`
-- `cache.py` – Calculation caching
-- `helpers.py` – Helper functions
-
----
-
-## ⚡ Performance Tips
-
-- Uses a **caching system** to skip redundant calculations
-- Processes only **selected/necessary curves**
-- Built with **NumPy** for heavy data sets
-- Curve simplification reduces SVG size
-- Efficient **real-time updates** after changes
-
----
-
-## 🧩 Troubleshooting
-
-| Problem                      | Solution |
-|-----------------------------|----------|
-| No curves show on export    | Ensure you selected valid curve objects |
-| SVG size looks off          | Adjust the **SVG Scale** setting |
-| MLO appears rotated         | Try rotating the curves 180° |
-| Performance is sluggish     | Lower the **Curve Resolution** |
-
----
-
-## 🙌 Acknowledgments
-
-This add-on was created to simplify the workflow for building GTA V minimaps with Scaleform, solving common issues with coordinate systems, scaling, and positioning.
-
----
+Developed by Ruby

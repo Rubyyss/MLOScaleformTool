@@ -1,5 +1,5 @@
 """
-SVG export functionality for GTA V Scaleform Minimap Calculator addon.
+SVG export functionality for GTA V Scaleform Minimap Calculator.
 
 This module provides functionality for exporting processed curve data
 to SVG format for use in GTA V minimap creation.
@@ -12,26 +12,31 @@ from typing import Dict, List, Tuple, Any
 from ..geometry import GPointF, GRectF, Vector2
 from ..geometry.utils import GeometryUtils
 
+
 class SVGExporter:
     """
     Handles exporting curve data to SVG format for GTA V Scaleform minimap.
-    
+
     This class provides methods for generating SVG content from curve data
     and exporting it to files.
     """
-    
+
     @staticmethod
-    def generate_svg_content(dimensions: Dict[str, float], normalized_curves: List[Dict[str, Any]], 
-                            settings, minimap_coords: List[Dict[str, float]]) -> str:
+    def generate_svg_content(
+        dimensions: Dict[str, float],
+        normalized_curves: List[Dict[str, Any]],
+        settings,
+        minimap_coords: List[Dict[str, float]],
+    ) -> str:
         """
         Generate SVG content from normalized curve data.
-        
+
         Args:
             dimensions: Dictionary with width and height information
             normalized_curves: List of normalized curve objects with style information
             settings: Blender settings object containing SVG export settings
             minimap_coords: List of minimap coordinate points
-            
+
         Returns:
             String containing complete SVG document
         """
@@ -52,21 +57,39 @@ class SVGExporter:
             for curve_obj in normalized_curves:
                 splines = curve_obj["splines"]
                 style = curve_obj["style"]
-                
+
                 # If style information exists, use it
                 if style:
-                    fill_color = GeometryUtils.hex_from_rgba(style["fill_color"]) if style["use_fill"] else "none"
-                    stroke_color = GeometryUtils.hex_from_rgba(style["stroke_color"]) if style["use_stroke"] else "none"
+                    fill_color = (
+                        GeometryUtils.hex_from_rgba(style["fill_color"])
+                        if style["use_fill"]
+                        else "none"
+                    )
+                    stroke_color = (
+                        GeometryUtils.hex_from_rgba(style["stroke_color"])
+                        if style["use_stroke"]
+                        else "none"
+                    )
                     stroke_width = style["stroke_width"] if style["use_stroke"] else 0
                 else:
                     # Fallback to global settings
-                    fill_color = GeometryUtils.hex_from_rgba(settings.fill_color) if settings.use_fill else "none"
-                    stroke_color = GeometryUtils.hex_from_rgba(settings.stroke_color) if settings.use_stroke else "none"
+                    fill_color = (
+                        GeometryUtils.hex_from_rgba(settings.fill_color)
+                        if settings.use_fill
+                        else "none"
+                    )
+                    stroke_color = (
+                        GeometryUtils.hex_from_rgba(settings.stroke_color)
+                        if settings.use_stroke
+                        else "none"
+                    )
                     stroke_width = settings.stroke_width if settings.use_stroke else 0
-                
+
                 # Generate path data for all splines in the object
                 for spline in splines:
-                    path_data = SVGExporter._generate_path_data(spline, settings.precision, settings.use_comma_separator)
+                    path_data = SVGExporter._generate_path_data(
+                        spline, settings.precision, settings.use_comma_separator
+                    )
                     if path_data:
                         svg_content += f'    <path d="{path_data}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width}" />\n'
 
@@ -75,27 +98,29 @@ class SVGExporter:
             for coord in minimap_coords:
                 x, y = coord["x"] * settings.svg_scale, coord["y"] * settings.svg_scale
                 svg_content += f'    <circle cx="{x:.2f}" cy="{y:.2f}" r="{settings.marker_size}" fill="{settings.marker_color}" />\n'
-            svg_content += f'    <!-- Markers show reference points for positioning. Can be safely removed. -->\n'
+            svg_content += f"    <!-- Markers show reference points for positioning. Can be safely removed. -->\n"
 
         # Close SVG document
         return svg_content + "  </g>\n</svg>"
 
     @staticmethod
-    def _generate_path_data(spline: List[Dict[str, Any]], precision: int, use_comma: bool) -> str:
+    def _generate_path_data(
+        spline: List[Dict[str, Any]], precision: int, use_comma: bool
+    ) -> str:
         """
         Generate SVG path data from spline segments.
-        
+
         Args:
             spline: List of spline segments
             precision: Number of decimal places for coordinates
             use_comma: Whether to use comma as decimal separator
-            
+
         Returns:
             SVG path data string
         """
         # Join multiple segments into a single path for better performance
         path_segments = []
-        
+
         for segment in spline:
             seg_type, points = segment["type"], segment["points"]
             if seg_type == "M":
@@ -114,7 +139,7 @@ class SVGExporter:
                 x3 = GeometryUtils.format_coordinate(points[2].x, precision, use_comma)
                 y3 = GeometryUtils.format_coordinate(points[2].y, precision, use_comma)
                 path_segments.append(f"C {x1},{y1} {x2},{y2} {x3},{y3}")
-        
+
         # Join all segments with a single space
         return " ".join(path_segments)
 
@@ -122,7 +147,7 @@ class SVGExporter:
     def export_svg_file(filepath: str, svg_content: str) -> None:
         """
         Write SVG content to file.
-        
+
         Args:
             filepath: Path to save the SVG file
             svg_content: SVG content to write
@@ -134,11 +159,11 @@ class SVGExporter:
     def export_minimap_data(filepath: str, minimap_data: Dict[str, Any]) -> str:
         """
         Export minimap data to JSON file.
-        
+
         Args:
             filepath: Base path for the SVG file
             minimap_data: Minimap data to export
-            
+
         Returns:
             Path to the exported JSON file
         """
