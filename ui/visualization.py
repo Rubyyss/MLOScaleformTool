@@ -465,6 +465,8 @@ def enable_visualization(context):
     return False
 
 
+# First fix for ui/visualization.py
+
 def disable_visualization(context):
     """Disable visualization in the 3D viewport."""
     global _handle_3d, _visualization_enabled
@@ -499,6 +501,26 @@ def disable_visualization(context):
         print(f"Warning: Failed to update viewport: {e}")
     
     return True
+
+def clear_visualization_data():
+    """
+    Clear all visualization data.
+    
+    This function resets the global visualization state variables, ensuring
+    that no data persists between scene changes or file loads.
+    """
+    global _visualization_data, _visualization_enabled, _handle_3d
+    
+    # Reset the data dictionary
+    _visualization_data = {}
+    
+    # Set enabled flag to False
+    _visualization_enabled = False
+    
+    # Clear the handle (if not already cleared by disable_visualization)
+    # We don't remove the draw handler here as that should be done by disable_visualization
+    # This is just a safety measure
+    _handle_3d = None
 
 
 def update_visualization_data(context):

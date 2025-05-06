@@ -59,15 +59,29 @@ def on_file_load(dummy):
     
     # Disable any active visualization
     if bpy.context:
-        # Import here to avoid circular imports
-        from .ui.visualization import disable_visualization, clear_visualization_data
-        disable_visualization(bpy.context)
-        clear_visualization_data()
+        try:
+            # Import here to avoid circular imports
+            from .ui.visualization import disable_visualization, clear_visualization_data
+            # First disable the visualization
+            disable_visualization(bpy.context)
+            # Then clear all visualization data
+            clear_visualization_data()
+            
+            # Force a redraw of all 3D viewports
+            for window in bpy.context.window_manager.windows:
+                for area in window.screen.areas:
+                    if area.type == 'VIEW_3D':
+                        area.tag_redraw()
+        except Exception as e:
+            print(f"Error during visualization cleanup on file load: {e}")
     
     # Reset the visualization enabled property if it exists
-    for scene in bpy.data.scenes:
-        if hasattr(scene, "scaleform_vis_enabled"):
-            scene.scaleform_vis_enabled = False
+    try:
+        for scene in bpy.data.scenes:
+            if hasattr(scene, "scaleform_vis_enabled"):
+                scene.scaleform_vis_enabled = False
+    except Exception as e:
+        print(f"Error resetting visualization property: {e}")
 
 
 @persistent
@@ -78,19 +92,57 @@ def on_scene_change(dummy):
     """
     # Disable any active visualization in old scene
     if bpy.context:
-        # Import here to avoid circular imports
-        from .ui.visualization import disable_visualization, clear_visualization_data
-        disable_visualization(bpy.context)
-        clear_visualization_data()
+        try:
+            # Import here to avoid circular imports
+            from .ui.visualization import disable_visualization, clear_visualization_data
+            # First disable the visualization
+            disable_visualization(bpy.context)
+            # Then clear all visualization data
+            clear_visualization_data()
+            
+            # Force a redraw of all 3D viewports
+            for window in bpy.context.window_manager.windows:
+                for area in window.screen.areas:
+                    if area.type == 'VIEW_3D':
+                        area.tag_redraw()
+        except Exception as e:
+            print(f"Error during visualization cleanup on scene change: {e}")
     
     # Make sure the UI reflects the correct state
-    if hasattr(bpy.context, "scene") and bpy.context.scene and hasattr(bpy.context.scene, "scaleform_vis_enabled"):
-        bpy.context.scene.scaleform_vis_enabled = False
+    try:
+        if hasattr(bpy.context, "scene") and bpy.context.scene and hasattr(bpy.context.scene, "scaleform_vis_enabled"):
+            bpy.context.scene.scaleform_vis_enabled = False
+    except Exception as e:
+        print(f"Error updating visualization UI state: {e}")
+
+
+# Added new handler for more reliable cleanup
+@persistent
+def on_load_pre(dummy):
+    """
+    Handler called just before a new file is loaded.
+    This ensures visualizations are cleared before opening a new project.
+    """
+    # Clear all caches first
+    from .utils.cache import clear_all_caches
+    clear_all_caches()
+    
+    # Try to disable visualization before loading new file
+    if bpy.context:
+        try:
+            from .ui.visualization import disable_visualization, clear_visualization_data
+            disable_visualization(bpy.context)
+            clear_visualization_data()
+        except Exception as e:
+            print(f"Error during pre-load visualization cleanup: {e}")
 
 
 def register_scene_handlers():
     """Register the scene and file handlers."""
     # Check if handlers are already registered to avoid duplicates
+    if on_load_pre not in bpy.app.handlers.load_pre:
+        bpy.app.handlers.load_pre.append(on_load_pre)
+        
     if on_file_load not in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.append(on_file_load)
         
@@ -107,6 +159,9 @@ def register_scene_handlers():
 def unregister_scene_handlers():
     """Unregister the scene and file handlers."""
     # Remove all handler references
+    if on_load_pre in bpy.app.handlers.load_pre:
+        bpy.app.handlers.load_pre.remove(on_load_pre)
+        
     if on_file_load in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(on_file_load)
         
@@ -182,6 +237,13 @@ def register():
 
     # Step 5: Register scene handlers for visualization cleanup
     register_scene_handlers()
+    
+    # Step 6: Ensure no visualization is active initially
+    try:
+        from .ui.visualization import clear_visualization_data
+        clear_visualization_data()
+    except Exception as e:
+        print(f"Error clearing visualization data during registration: {e}")
 
     print(
         f"Registered {_bl_info['name']} v{'.'.join(str(v) for v in _bl_info['version'])}"
@@ -190,7 +252,16 @@ def register():
 
 def unregister():
     """Unregister the add-on from Blender."""
-    # First unregister scene handlers to prevent errors during cleanup
+    # First disable any active visualizations
+    try:
+        from .ui.visualization import disable_visualization, clear_visualization_data
+        if bpy.context:
+            disable_visualization(bpy.context)
+        clear_visualization_data()
+    except Exception as e:
+        print(f"Error cleaning up visualization during unregister: {e}")
+    
+    # Then unregister scene handlers to prevent errors during cleanup
     unregister_scene_handlers()
 
     # Clear all caches
@@ -225,6 +296,15 @@ def unregister():
 def force_unregister():
     """Force unregister if already registered to prevent double registration."""
     try:
+        # First disable any active visualizations
+        try:
+            from .ui.visualization import disable_visualization, clear_visualization_data
+            if bpy.context:
+                disable_visualization(bpy.context)
+            clear_visualization_data()
+        except Exception as e:
+            print(f"Error cleaning up visualization during force unregister: {e}")
+            
         # Import locally to avoid import errors during first installation
         from . import ui
 
