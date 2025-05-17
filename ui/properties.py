@@ -52,7 +52,7 @@ class ScaleformCalculatorSettings(bpy.types.PropertyGroup):
     svg_scale: FloatProperty(
         name="SVG Scale",
         description="Scale factor for SVG output",
-        default=20.0,
+        default=20.133,
         min=0.01,
         max=60.0,
     )
