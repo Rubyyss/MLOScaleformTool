@@ -1,31 +1,22 @@
 schema_version = "1.0.0"
 
-id = "gta_mlo_scaleform_tools"
-version = "1.0.1"
-name = "MLOScaleformTools"
-tagline = "Scaleform Tools for minimaps"
+id = "gta_minimap_gfx"
+version = "1.10.0"
+name = "MLOScaleformTool"
+tagline = "3D interiors to curves to GTA V minimap interior GFX"
 maintainer = "rubyys"
 type = "add-on"
 
-website = "https://github.com/Rubyyss/MLOScaleformTool"
+tags = ["Import-Export", "3D View", "Add Curve"]
 
-tags = [
-    "Scaleform", 
-    "Import-Export", 
-    "3D View", 
-    "Curves", 
-    "Calculator", 
-    "2D Size", 
-    "Minimap", 
-    "GTA V", 
-    "MLO"
-]
-
-blender_version_min = "4.4.0"
+blender_version_min = "4.2.0"
 
 license = ["SPDX:MIT"]
 copyright = ["2025-2026 rubyys"]
 
 [permissions]
-files = "Import/export SVG files. Save/load presets."
-clipboard = "Copy/paste object location and rotation."
+files = "Import/export minimap .gfx files"
+clipboard = "Copy the SetRadarAsInteriorThisFrame line"
+
+[build]
+paths_exclude_pattern = ["__pycache__/", "*.pyc"]
