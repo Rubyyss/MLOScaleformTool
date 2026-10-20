@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 
-id = "gta_minimap_gfx"
+id = "gta_mlo_scaleform_tools"
 version = "1.10.0"
 name = "MLOScaleformTool"
 tagline = "3D interiors to curves to GTA V minimap interior GFX"
